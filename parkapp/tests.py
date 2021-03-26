@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 import datetime
 from django.urls import reverse, reverse_lazy
 from .views import index, animals, plants, habitats, habitatdetails
+from .forms import HabitatForm, AnimalForm, PlantForm
 
 # Create your tests here.
 
@@ -76,4 +77,73 @@ class gethabitattest(TestCase):
     def test_view_url_accessible_by_name(self):
        response = self.client.get(reverse('habitats'))
        self.assertEqual(response.status_code, 200)
-        
+
+class newhabitatform(TestCase):
+    def setUp(self):
+        self.user=User.objects.create_user(username='tom', password='P@ssw0rd1')
+
+    def test_habitatform_empty(self):
+        data={
+        'habitatname': '', 
+        'habitatdescription':'',
+        'user': ''
+        }
+        form = HabitatForm(data)
+        self.assertFalse(form.is_valid())
+
+    def test_habitatform(self):
+        data={
+            'habitatname': 'habitat1', 
+            'habitatdescription':'habitat desc',
+            'user': self.user
+        }
+        form = HabitatForm(data)
+        self.assertTrue(form.is_valid())
+
+class newanimalform(TestCase):
+    def setUp(self):
+        self.user=User.objects.create_user(username='tom', password='P@ssw0rd1')
+        self.habitat=Habitat.objects.create(habitatname='habitat 1', habitatdescription='hab des', user=self.user)
+
+    def test_animalform_empty(self):
+        data={
+        'animalname': '', 
+        }
+        form = AnimalForm(data)
+        self.assertFalse(form.is_valid())
+
+    def test_animalform(self):
+        data={
+            'animalname': 'animal1', 
+            'animalsciname':'animal name',
+            'animaldescription': 'des',
+            'animalhabitat':self.habitat,
+            'user': self.user,
+            'dateentered': datetime.date(2020, 12, 30),
+        }
+        form = AnimalForm(data)
+        self.assertTrue(form.is_valid())
+
+class newplantform(TestCase):
+    def setUp(self):
+        self.user=User.objects.create_user(username='tom', password='P@ssw0rd1')
+        self.habitat=Habitat.objects.create(habitatname='habitat 1', habitatdescription='hab des', user=self.user)
+
+    def test_plantform_empty(self):
+        data={
+        'plantname': '', 
+        }
+        form = AnimalForm(data)
+        self.assertFalse(form.is_valid())
+
+    def test_plantform(self):
+        data={
+            'plantname': 'animal1', 
+            'plantsciname':'animal name',
+            'plantdescription': 'des',
+            'planthabitat':self.habitat,
+            'user': self.user,
+            'dateentered': datetime.date(2020, 12, 30),
+        }
+        form = PlantForm(data)
+        self.assertTrue(form.is_valid())

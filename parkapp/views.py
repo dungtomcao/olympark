@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from datetime import datetime
 from .models import Plant, Animal, Habitat
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
+from .forms import HabitatForm, AnimalForm, PlantForm
 # Create your views here.
 def index(request):
     return render(request, 'parkapp/index.html')
@@ -23,8 +24,45 @@ def habitatdetails(request, id):
     return render(request, 'parkapp/habitatdetails.html', {'habitat' : habitat})
 
 '''The habitatdetails link in other tables' views don't link correctly 
-for example, in animals table, the animal has id of 1 
-but the habitat of that animal has id of 3 in habitats table
-{url 'habitatdetails' id=a.id} returns habitat of id 1 instead of 3
+This is because Habitat table and Animal/Plant table has a
+one to many relationship. 1 habitat links to many plants/animals
+Currently, animal/plant of id 1 only links to habitat of id 1, and
+this is similar to id 2,3,4,...
 
 I don't know how to fix this problem, please help '''
+
+def newhabitat(request):
+    form=HabitatForm
+    if request.method=='POST':
+        form=HabitatForm(request.POST)
+        if form.is_valid():
+            post=form.save(commit=True)
+            post.save()
+            form=HabitatForm()
+    else:
+        form=HabitatForm()
+    return render(request, 'parkapp/newhabitat.html', {'form' : form})
+
+def newanimal(request):
+    form=AnimalForm
+    if request.method=='POST':
+        form=AnimalForm(request.POST)
+        if form.is_valid():
+            post=form.save(commit=True)
+            post.save()
+            form=AnimalForm()
+    else:
+        form=AnimalForm()
+    return render(request, 'parkapp/newanimal.html', {'form' : form})
+
+def newplant(request):
+    form=PlantForm
+    if request.method=='POST':
+        form=PlantForm(request.POST)
+        if form.is_valid():
+            post=form.save(commit=True)
+            post.save()
+            form=PlantForm()
+    else:
+        form=PlantForm()
+    return render(request, 'parkapp/newplant.html', {'form' : form})
