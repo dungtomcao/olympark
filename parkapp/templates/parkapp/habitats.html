@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Habitats</h2>
+<table class='table'>
+ <tr>
+     <th>Habitat Name</th>
+     <th>Description</th>
+     <th>Researcher</th>
+ </tr>
+ {% for h in habitat_list %}
+   <tr>
+       <td>{{ h.habitatname }}</td>
+       <td>{{ h.habitatdescription }}</td>
+       <td>{{ h.user }}</td>
+   </tr>
+
+ {% endfor %}
+
+
+</table>
+
+{% endblock %}

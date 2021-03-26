@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Plants</h2>
+<table class='table'>
+ <tr>
+     <th>Plant Name</th>
+     <th>Scientific Name</th>
+     <th>Description</th>
+     <th>Plant Habitat</th>
+     <th>Researcher</th>
+     <th>Date Entered</th>
+ </tr>
+ {% for p in plant_list %}
+   <tr>
+       <td>{{ p.plantname }}</td>
+       <td>{{ p.plantsciname }}</td>
+       <td>{{ p.plantdescription }}</td>
+       <td>{{ p.planthabitat }}</td>
+       <td>{{ p.user }}</td>
+       <td>{{ p.dateentered }}</td>
+   </tr>
+
+ {% endfor %}
+
+
+</table>
+
+{% endblock %}

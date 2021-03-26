@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Animals</h2>
+<table class='table'>
+ <tr>
+     <th>Animal Name</th>
+     <th>Scientific Name</th>
+     <th>Description</th>
+     <th>Animal Habitat</th>
+     <th>Researcher</th>
+     <th>Date Entered</th>
+ </tr>
+ {% for a in animal_list %}
+   <tr>
+       <td>{{ a.animalname }}</td>
+       <td>{{ a.animalsciname }}</td>
+       <td>{{ a.animaldescription }}</td>
+       <td>{{ a.animalhabitat }}</td>
+       <td>{{ a.user }}</td>
+       <td>{{ a.dateentered }}</td>
+   </tr>
+
+ {% endfor %}
+
+
+</table>
+
+{% endblock %}
