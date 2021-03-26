@@ -16,7 +16,7 @@
        <td>{{ a.animalname }}</td>
        <td>{{ a.animalsciname }}</td>
        <td>{{ a.animaldescription }}</td>
-       <td>{{ a.animalhabitat }}</td>
+       <td><a href="{% url 'habitatdetails' id=a.id %}">{{ a.animalhabitat }}</a></td>
        <td>{{ a.user }}</td>
        <td>{{ a.dateentered }}</td>
    </tr>

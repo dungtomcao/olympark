@@ -16,7 +16,7 @@
        <td>{{ p.plantname }}</td>
        <td>{{ p.plantsciname }}</td>
        <td>{{ p.plantdescription }}</td>
-       <td>{{ p.planthabitat }}</td>
+       <td><a href="{% url 'habitatdetails' id=p.id %}">{{ p.planthabitat }}</a></td>
        <td>{{ p.user }}</td>
        <td>{{ p.dateentered }}</td>
    </tr>
