@@ -138,8 +138,8 @@ class newplantform(TestCase):
 
     def test_plantform(self):
         data={
-            'plantname': 'animal1', 
-            'plantsciname':'animal name',
+            'plantname': 'plant1', 
+            'plantsciname':'plant name',
             'plantdescription': 'des',
             'planthabitat':self.habitat,
             'user': self.user,
@@ -147,3 +147,67 @@ class newplantform(TestCase):
         }
         form = PlantForm(data)
         self.assertTrue(form.is_valid())
+
+class new_habitat_auth_test(TestCase):
+    def setUp(self):
+        self.user=User.objects.create_user(username='tom', password='P@ssw0rd1')
+        self.habitat=Habitat.objects.create(habitatname='habitat 1', habitatdescription='hab des', user=self.user)
+    
+    def test_redirect_if_not_logged_in(self):
+        response=self.client.get(reverse('newhabitat'))
+        self.assertRedirects(response, '/accounts/login/?next=/parkapp/newhabitat/')
+
+    def test_logged_in_uses_correct_template(self):
+        login=self.client.login(username='tom', password='P@ssw0rd1')
+        response=self.client.get(reverse('newhabitat'))
+        self.assertEqual(str(response.context['user']), 'tom')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'parkapp/newhabitat.html')
+
+class new_animal_auth_test(TestCase):
+    def setUp(self):
+        self.user=User.objects.create_user(username='tom', password='P@ssw0rd1')
+        self.habitat=Habitat.objects.create(habitatname='habitat 1', habitatdescription='hab des', user=self.user)
+        self.animal=Animal.objects.create(
+            animalname= 'animal1', 
+            animalsciname='animal name',
+            animaldescription= 'des',
+            animalhabitat=self.habitat,
+            user= self.user,
+            dateentered= datetime.date(2020, 12, 30),
+        )
+    
+    def test_redirect_if_not_logged_in(self):
+        response=self.client.get(reverse('newanimal'))
+        self.assertRedirects(response, '/accounts/login/?next=/parkapp/newanimal/')
+
+    def test_logged_in_uses_correct_template(self):
+        login=self.client.login(username='tom', password='P@ssw0rd1')
+        response=self.client.get(reverse('newanimal'))
+        self.assertEqual(str(response.context['user']), 'tom')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'parkapp/newanimal.html')
+
+class new_plant_auth_test(TestCase):
+    def setUp(self):
+        self.user=User.objects.create_user(username='tom', password='P@ssw0rd1')
+        self.habitat=Habitat.objects.create(habitatname='habitat 1', habitatdescription='hab des', user=self.user)
+        self.plant=Plant.objects.create(
+            plantname = 'plant1', 
+            plantsciname ='plant name',
+            plantdescription = 'des',
+            planthabitat = self.habitat,
+            user = self.user,
+            dateentered = datetime.date(2020, 12, 30),
+        )
+    
+    def test_redirect_if_not_logged_in(self):
+        response=self.client.get(reverse('newplant'))
+        self.assertRedirects(response, '/accounts/login/?next=/parkapp/newplant/')
+
+    def test_logged_in_uses_correct_template(self):
+        login=self.client.login(username='tom', password='P@ssw0rd1')
+        response=self.client.get(reverse('newplant'))
+        self.assertEqual(str(response.context['user']), 'tom')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'parkapp/newplant.html')
