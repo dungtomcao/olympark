@@ -3,6 +3,7 @@ from datetime import datetime
 from .models import Plant, Animal, Habitat
 from django.urls import reverse, reverse_lazy
 from .forms import HabitatForm, AnimalForm, PlantForm
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 def index(request):
     return render(request, 'parkapp/index.html')
@@ -31,6 +32,7 @@ this is similar to id 2,3,4,...
 
 I don't know how to fix this problem, please help '''
 
+@login_required
 def newhabitat(request):
     form=HabitatForm
     if request.method=='POST':
@@ -43,6 +45,7 @@ def newhabitat(request):
         form=HabitatForm()
     return render(request, 'parkapp/newhabitat.html', {'form' : form})
 
+@login_required
 def newanimal(request):
     form=AnimalForm
     if request.method=='POST':
@@ -55,6 +58,7 @@ def newanimal(request):
         form=AnimalForm()
     return render(request, 'parkapp/newanimal.html', {'form' : form})
 
+@login_required
 def newplant(request):
     form=PlantForm
     if request.method=='POST':
@@ -66,3 +70,9 @@ def newplant(request):
     else:
         form=PlantForm()
     return render(request, 'parkapp/newplant.html', {'form' : form})
+
+def loginmessage(request):
+    return render(request,'registration/loginmessage.html')
+
+def logoutmessage(request):
+    return render(request,'registration/logoutmessage.html')

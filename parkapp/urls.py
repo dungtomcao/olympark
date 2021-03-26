@@ -10,5 +10,7 @@ urlpatterns = [
     path('newhabitat/', views.newhabitat, name='newhabitat'),
     path('newanimal/', views.newanimal, name='newanimal'),
     path('newplant/', views.newplant, name='newplant'),
+    path('loginmessage/', views.loginmessage, name='loginmessage'),
+    path('logoutmessage/', views.logoutmessage, name='logoutmessage'),
 
 ]
